@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating Cv form with Ai</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+        <h1 class="text-3xl font-bold mb-2 text-gray-800">Creating CV Form with Ai</h1>
+        <!-- <p class="text-gray-600 mb-6">Backend Server ဖြင့် လုံခြုံစွာချိတ်ဆက်ထားပါသည်</p> -->
+        <form id="ai-form">
+            <br>
+            <div class="mb-4">
+                <label for="name" class="block text-gray-700 font-semibold mb-2">အမည် (Name):</label>
+                <input type="text" id="name" name="name" class="w-full px-4 py-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+                <label for="skills" class="block text-gray-700 font-semibold mb-2">ကျွမ်းကျင်မှုများ (Skills):</label>
+                <input type="text" id="skills" name="skills" class="w-full px-4 py-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+                <label for="exp" class="block text-gray-700 font-semibold mb-2">အတွေ့အကြုံ (Experience):</label>
+                <input type="text" id="exp" name="exp" placeholder="ဥပမာ - 5 years" class="w-full px-4 py-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+                <label for="others" class="block text-gray-700 font-semibold mb-2">အခြားအချက်အလက် (Others):</label>
+                <textarea id="others" name="others" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+            </div>
+            <!-- *** Button container class ကို ပြင်ဆင်ထားသည် *** -->
+            <div class="flex justify-center mt-6">
+                 <button type="button" id="relevance-button" class="w-full md:w-1/2 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg">
+                    Submit
+                </button>
+                 <!-- <button type="button" id="gemini-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg">
+                     ✨ Gemini ဖြင့် အကျဉ်းချုပ်ဖန်တီးမည်
+                 </button> -->
+            </div>
+        </form>
+        <div id="result-container" class="mt-6">
+            <h2 class="text-xl font-bold text-gray-800">ရလဒ်:</h2>
+            <div id="loading" class="hidden my-4 text-center">... Processing ...</div>
+            <div id="result-output" class="bg-green-50 text-gray-900 p-4 rounded-lg mt-2 min-h-[100px]"></div>
+            <!-- *** Download Button (အသစ်ထည့်သွင်းထားသည်) *** -->
+            <button id="download-button" class="hidden w-full mt-4 bg-gray-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-800 transition duration-300">
+                CV ကို Download ရယူမည်
+            </button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

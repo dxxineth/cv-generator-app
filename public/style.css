@@ -1,0 +1,7 @@
+body {
+    font-family: 'Padauk', 'Inter', sans-serif; /* မြန်မာစာအတွက် Font */
+}
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
