@@ -16,14 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
             resultOutput.innerHTML = '';
             downloadButton.classList.add('hidden');
             relevanceButton.disabled = true;
-            // *** FIX: Check if geminiButton exists before disabling it ***
             if (geminiButton) {
                 geminiButton.disabled = true;
             }
         } else {
             loadingSpinner.classList.add('hidden');
             relevanceButton.disabled = false;
-            // *** FIX: Check if geminiButton exists before enabling it ***
             if (geminiButton) {
                 geminiButton.disabled = false;
             }
@@ -58,11 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dataToSend)
             });
-            const result = await response.json();
 
+            // *** FIX: Check response status BEFORE trying to parse as JSON ***
             if (!response.ok) {
-                throw new Error(result.error || 'Unknown error from server.');
+                const errorText = await response.text(); // Get error response as text
+                console.error("Error response from server:", errorText);
+                throw new Error(`Server error (status: ${response.status}). The API endpoint might be wrong or the function has an error. Check the Netlify function logs for more details.`);
             }
+
+            const result = await response.json(); // Now it's safe to parse
 
             if (result && result.output && result.output.answer) {
                 let answerText = result.output.answer;
@@ -97,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // *** FIX: Check if geminiButton exists before adding event listener ***
+    // Check if geminiButton exists before adding event listener
     if (geminiButton) {
         geminiButton.addEventListener('click', async () => {
             // Gemini button logic here...
