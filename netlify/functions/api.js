@@ -2,18 +2,23 @@ const express = require('express');
 const serverless = require('serverless-http');
 const fetch = require('node-fetch');
 
-// Express app ကိုတည်ဆောက်ခြင်း
 const app = express();
 const router = express.Router();
-
-// Middleware များ
 app.use(express.json());
 
-// .env variable တွေက Netlify environment မှာ တိုက်ရိုက်ရပါမယ်
+// Get environment variables from Netlify
 const { GEMINI_API_KEY, RELEVANCE_API_URL } = process.env;
 
-// Relevance AI အတွက် Endpoint
 router.post('/relevance', async (req, res) => {
+    // --- START DEBUGGING LOGS ---
+    console.log("--- Relevance AI Function Triggered ---");
+    if (!RELEVANCE_API_URL) {
+        console.error("FATAL: RELEVANCE_API_URL is not set in Netlify environment variables.");
+        return res.status(500).json({ error: "Server configuration error: RELEVANCE_API_URL is missing." });
+    }
+    console.log("RELEVANCE_API_URL is present.");
+    // --- END DEBUGGING LOGS ---
+
     const userData = req.body;
     const dataToSend = {
         project: "a7a4a343-9152-427d-85dd-46a663e653b6",
@@ -27,9 +32,10 @@ router.post('/relevance', async (req, res) => {
         });
         const data = await apiResponse.json();
         if (!apiResponse.ok) {
-            console.error('Relevance AI Error:', data);
+            console.error('Relevance AI API Error:', data);
             throw new Error(data.message || 'Error from Relevance AI service');
         }
+        console.log("Successfully fetched from Relevance AI.");
         res.json(data);
     } catch (error) {
         console.error('Catch Block Error:', error);
@@ -37,11 +43,7 @@ router.post('/relevance', async (req, res) => {
     }
 });
 
-// Gemini API အတွက် Endpoint (အကယ်၍ ပြန်သုံးမည်ဆိုလျှင်)
-// router.post('/gemini', ...);
+// Add other routes like /gemini if needed
 
-// Router ကို path အောက်မှာ သတ်မှတ်ပေးခြင်း
 app.use('/.netlify/functions/api', router);
-
-// serverless-http ဖြင့် app ကို export လုပ်ခြင်း
 module.exports.handler = serverless(app);
