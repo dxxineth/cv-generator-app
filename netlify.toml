@@ -1,0 +1,11 @@
+[build]
+  # Frontend file တွေရှိတဲ့ folder
+  publish = "public"
+  # Serverless function တွေရှိတဲ့ folder
+  functions = "netlify/functions"
+
+# API request တွေကို function ဆီသို့ လမ်းကြောင်းလွှဲပေးရန်
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
